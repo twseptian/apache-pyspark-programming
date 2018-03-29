@@ -31,26 +31,29 @@ df4 = df3.withColumn("Global_reactive_power", df3["Global_reactive_power"].cast(
 df5 = df4.withColumn("Voltage", df4["Voltage"].cast(DoubleType()))
 df6 = df5.withColumn("Global_intensity", df5["Global_intensity"].cast(DoubleType()))
 
+# Change Missing value to 0
+df6.fillna(0)
+
 # Output the minimum, maximum normalization of the columns 'Global_active_power','Global_reactive_power','Voltage','Global_intentsity'
 print "Minimum-Maximum Normalization Global_active_power"
 (df6.select(min("Global_active_power").alias("MIN_Global_active_power"),max("Global_active_power").alias("MAX_Global_active_power")).\
             crossJoin(df6).withColumn("Min-Max_Normalization",(col("Global_active_power") - col("MIN_Global_active_power")) / (col("MAX_Global_active_power") - col("MIN_Global_active_power")))).\
             select("Global_active_power","MIN_Global_active_power","MAX_Global_active_power","Min-Max_Normalization").\
-            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-global_active_power.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-global_active_power_result.csv") #save result to csv file in hdfs
 
 print "Minimum-Maximum Normalization Global_reactive_power"
 (df6.select(min("Global_reactive_power").alias("MIN_Global_Reactive_power"),max("Global_reactive_power").alias("MAX_Global_Reactive_power")).\
             crossJoin(df6).withColumn("Min-Max_Normalization",(col("Global_reactive_power") - col("MIN_Global_Reactive_power")) / (col("MAX_Global_Reactive_power") - col("MIN_Global_Reactive_power")))).\
             select("Global_Reactive_power","MIN_Global_Reactive_power","MAX_Global_Reactive_power","Min-Max_Normalization").\
-            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Global_reactive_power.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Global_reactive_power_result.csv") #save result to csv file in hdfs
 
 print "Minimum-Maximum Normalization Voltage"
 (df6.select(min("Voltage").alias("MIN_Voltage"),max("Voltage").alias("MAX_Voltage")).\
             crossJoin(df6).withColumn("Min-Max_Normalization",(col("Voltage") - col("MIN_Voltage")) / (col("MAX_Voltage") - col("MIN_Voltage")))).\
             select("Voltage","MIN_Voltage","MAX_Voltage","Min-Max_Normalization").\
-            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Voltage.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Voltage_result.csv") #save result to csv file in hdfs
 
 print "Minimum-Maximum Normalization Global_intensity"
 (df6.select(min("Global_intensity").alias("MIN_Global_Intensity"),max("Global_intensity").alias("MAX_Global_Intensity")).\
             crossJoin(df6).withColumn("Min-Max_Normalization",(col("Global_intensity") - col("MIN_Global_Intensity")) / (col("MAX_Global_Intensity") - col("MIN_Global_Intensity")))).select("Global_intensity","MIN_Global_Intensity","MAX_Global_Intensity","Min-Max_Normalization").\
-            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Global_Intensity.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options (header='true').save("min-max-normalization-Global_Intensity_result.csv") #save result to csv file in hdfs

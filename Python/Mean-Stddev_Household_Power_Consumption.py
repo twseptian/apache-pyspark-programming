@@ -31,10 +31,13 @@ df4 = df3.withColumn("Global_reactive_power", df3["Global_reactive_power"].cast(
 df5 = df4.withColumn("Voltage", df4["Voltage"].cast(DoubleType()))
 df6 = df5.withColumn("Global_intensity", df5["Global_intensity"].cast(DoubleType()))
 
+# Change Missing value to 0
+df6.fillna(0)
+
 # Output the mean and Standar deviation of the columns 'Global_active_power','Global_reactive_power','Voltage','Global_intentsity'
 print "Show output Mean and Standar Deviation 'Global_active_power','Global_reactive_power','Voltage','Global_intensity'"
 df6.select([mean("Global_active_power").alias("Mean Global Active Power"),stddev("Global_active_power").alias("Standar Deviation Global Active Power"),\
             mean("Global_reactive_power").alias("Mean Global Reactive Power"),stddev("Global_reactive_power").alias("Standar Deviation Global Reactive Power"),\
             mean("voltage").alias("Mean Voltage"),stddev("Voltage").alias("Standar Deviation Voltage"),\
             mean("Global_intensity").alias("Mean Global Intensity"),stddev("Global_intensity").alias("Standar Deviation Global Intensity")]).\
-            coalesce(1).write.format("csv").options (header='true').save("mean-stddev_household_power_consumption.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options (header='true').save("mean-stddev_household_power_consumption_result.csv") #save result to csv file in hdfs

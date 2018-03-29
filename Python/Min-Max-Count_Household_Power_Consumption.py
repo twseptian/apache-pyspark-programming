@@ -31,10 +31,13 @@ df4 = df3.withColumn("Global_reactive_power", df3["Global_reactive_power"].cast(
 df5 = df4.withColumn("Voltage", df4["Voltage"].cast(DoubleType()))
 df6 = df5.withColumn("Global_intensity", df5["Global_intensity"].cast(DoubleType()))
 
+# Change Missing value to 0
+df6.fillna(0)
+
 # Output the minimum, maximum and count of the columns 'Global_active_power','Global_reactive_power','Voltage','Global_intentsity'
 print "Show output Minimum, Maximum and Count'Global_active_power','Global_reactive_power','Voltage','Global_intensity'"
 df6.select([min("Global_active_power").alias("Minimum Global Active Power"),max("Global_active_power").alias("Maximun Global Active Power"),count("Global_active_power").alias("Count Global Active Power"),\
             min("Global_reactive_power").alias("Minimum Global Reactive Power"),max("Global_reactive_power").alias("Maximum Global Reactive Power"),count("Global_reactive_power").alias("Count Global Reactive Power"),\
             min("voltage").alias("Minimum Voltage"),max("Voltage").alias("Maximum Voltage"),count("Voltage").alias("Count Voltage"),\
             min("Global_intensity").alias("Minimum Global Intensity"),max("Global_intensity").alias("Maximum Global Intensity"),count("Global_intensity").alias("Count Global Intesity")]).\
-            coalesce(1).write.format("csv").options(header='true').save("min-max-count_household_power_consumption.csv") #save result to csv file in hdfs
+            coalesce(1).write.format("csv").options(header='true').save("min-max-count_household_power_consumption_result.csv") #save result to csv file in hdfs
