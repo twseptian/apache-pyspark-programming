@@ -1,2 +1,1 @@
-# Programming in Apache Spark
-Using Pyspark, Python's library for Apache Spark
+# Programming Big Data Analysis using Pyspark Python Library from Apache Spark
